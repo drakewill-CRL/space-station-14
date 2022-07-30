@@ -66,6 +66,12 @@
     !type:GenericGameRuleConfiguration
     id: Zombie
 
+  - type: gameRule
+  id: Societies
+  config:
+    !type:GenericGameRuleConfiguration
+    id: Societies
+
 # event schedulers
 - type: gameRule
   id: BasicStationEventScheduler
