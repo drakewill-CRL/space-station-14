@@ -109,3 +109,15 @@
   rules:
     - Pirates
     - BasicStationEventScheduler
+
+
+- type: gamePreset
+  id: Societies
+  alias:
+    - societies
+  name: "asdf"
+  description: "asdf"
+  showInVote: true
+  rules:
+    - Societies
+    - BasicStationEventScheduler
