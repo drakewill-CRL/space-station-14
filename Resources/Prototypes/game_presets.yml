@@ -110,13 +110,12 @@
     - Pirates
     - BasicStationEventScheduler
 
-
 - type: gamePreset
   id: Societies
   alias:
     - societies
-  name: "asdf"
-  description: "asdf"
+  name: "Societies"
+  description: "Help your Secret Society accomplish its objectives before the others do."
   showInVote: true
   rules:
     - Societies
