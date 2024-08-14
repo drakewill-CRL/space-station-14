@@ -4,6 +4,7 @@ using Content.Shared.Atmos;
 using Content.Shared.EntityEffects;
 using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.List;
 using Robust.Shared.Utility;
@@ -144,7 +145,7 @@ public partial class SeedData
 
     [DataField("nutrientConsumption")] public float NutrientConsumption = 0.75f;
 
-    [DataField("waterConsumption")] public float WaterConsumption = 0.5f;
+    [DataField("waterConsumption")] public WaterConsumptionComponent? WaterConsumption = null;
     [DataField("idealHeat")] public float IdealHeat = 293f;
     [DataField("heatTolerance")] public float HeatTolerance = 10f;
     [DataField("idealLight")] public float IdealLight = 7f;
@@ -251,6 +252,11 @@ public partial class SeedData
     [DataField("mutationPrototypes", customTypeSerializer: typeof(PrototypeIdListSerializer<SeedPrototype>))]
     public List<string> MutationPrototypes = new();
 
+    //Maybe this can just be a simple list for loading purposes?
+    //[DataField("components")] // , customTypeSerializer: typeof(ComponentNameSerializer)
+    //public List<Component> Components = new();
+    //public HashSet<string>? Components;
+
     public SeedData Clone()
     {
         DebugTools.Assert(!Immutable, "There should be no need to clone an immutable seed.");
@@ -270,7 +276,7 @@ public partial class SeedData
             ExudeGasses = new Dictionary<Gas, float>(ExudeGasses),
 
             NutrientConsumption = NutrientConsumption,
-            WaterConsumption = WaterConsumption,
+            //WaterConsumption = WaterConsumption,
             IdealHeat = IdealHeat,
             HeatTolerance = HeatTolerance,
             IdealLight = IdealLight,
@@ -333,7 +339,7 @@ public partial class SeedData
             ExudeGasses = new Dictionary<Gas, float>(ExudeGasses),
 
             NutrientConsumption = NutrientConsumption,
-            WaterConsumption = WaterConsumption,
+            //WaterConsumption = WaterConsumption,
             IdealHeat = IdealHeat,
             HeatTolerance = HeatTolerance,
             IdealLight = IdealLight,
