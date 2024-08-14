@@ -15,7 +15,7 @@
   idealLight: 8
   nutrientConsumption: 0.40 
   #Future state: attach components to seeds here somehow.
-  components:
+  growthComponents:
     - type: WaterConsumption
       Amount: 0.5
   #current state: the component is a variable on the seed data.
