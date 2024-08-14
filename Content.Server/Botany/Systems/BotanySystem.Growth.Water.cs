@@ -15,9 +15,6 @@ public sealed partial class BotanySystem
         if (component == null || component.Seed == null)
             return true;
 
-        //NOTE: i want components on the seed, but it may or may not have them?
-        //var waterComp = CompOrNull<WaterConsumptionComponent>(seedUid);
-        //WaterConsumptionComponent? waterComp = component.Seed.Components.FirstOrDefault(c => c.GetType() == typeof(WaterConsumptionComponent)) as WaterConsumptionComponent;
         var waterComp = component.Seed.WaterConsumption;
         if (waterComp == null || waterComp.Amount <= 0)
             return true;

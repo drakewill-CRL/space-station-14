@@ -252,10 +252,6 @@ public partial class SeedData
     [DataField("mutationPrototypes", customTypeSerializer: typeof(PrototypeIdListSerializer<SeedPrototype>))]
     public List<string> MutationPrototypes = new();
 
-    //Maybe this can just be a simple list for loading purposes?
-    //[DataField("components")] // , customTypeSerializer: typeof(ComponentNameSerializer)
-    //public List<Component> Components = new();
-    //public HashSet<string>? Components;
 
     public SeedData Clone()
     {
@@ -276,7 +272,7 @@ public partial class SeedData
             ExudeGasses = new Dictionary<Gas, float>(ExudeGasses),
 
             NutrientConsumption = NutrientConsumption,
-            //WaterConsumption = WaterConsumption,
+            WaterConsumption = WaterConsumption,
             IdealHeat = IdealHeat,
             HeatTolerance = HeatTolerance,
             IdealLight = IdealLight,
@@ -339,7 +335,7 @@ public partial class SeedData
             ExudeGasses = new Dictionary<Gas, float>(ExudeGasses),
 
             NutrientConsumption = NutrientConsumption,
-            //WaterConsumption = WaterConsumption,
+            WaterConsumption = WaterConsumption,
             IdealHeat = IdealHeat,
             HeatTolerance = HeatTolerance,
             IdealLight = IdealLight,

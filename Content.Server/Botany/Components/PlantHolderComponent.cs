@@ -1,5 +1,4 @@
 using Content.Shared.Chemistry.Components;
-using Robust.Shared.Serialization.TypeSerializers.Implementations;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
 namespace Content.Server.Botany.Components;
@@ -95,6 +94,4 @@ public sealed partial class PlantHolderComponent : Component
 
     [DataField]
     public Entity<SolutionComponent>? SoilSolution = null;
-
-    //[DataField("components", customTypeSerializer: typeof(ComponentRegistrySerializer))]
 }

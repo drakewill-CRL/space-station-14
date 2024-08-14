@@ -466,16 +466,7 @@ public sealed class PlantHolderSystem : EntitySystem
                 component.UpdateSpriteAfterUpdate = true;
         }
 
-        var canGrown = _botany.OnGrowth(uid, component);
-
-        // Water consumption.
-        //if (component.Seed.WaterConsumption > 0 && component.WaterLevel > 0 && _random.Prob(0.75f))
-        //{
-        //    component.WaterLevel -= MathF.Max(0f,
-        //        component.Seed.WaterConsumption * HydroponicsConsumptionMultiplier * HydroponicsSpeedMultiplier);
-        //    if (component.DrawWarnings)
-        //        component.UpdateSpriteAfterUpdate = true;
-        //}
+        var canGrow = _botany.OnGrowth(uid, component); //TODO: use for determining health change
 
         var healthMod = _random.Next(1, 3) * HydroponicsSpeedMultiplier;
 
