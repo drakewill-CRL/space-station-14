@@ -17,10 +17,16 @@ public sealed partial class PlantMutateHarvest : EntityEffect
         if (plantholder.Seed == null)
             return;
 
-        if (plantholder.Seed.HarvestRepeat == HarvestType.NoRepeat)
-            plantholder.Seed.HarvestRepeat = HarvestType.Repeat;
-        else if (plantholder.Seed.HarvestRepeat == HarvestType.Repeat)
-            plantholder.Seed.HarvestRepeat = HarvestType.SelfHarvest;
+        if (args.EntityManager.TryGetComponent<HarvestOnceComponent>(args.TargetEntity, out var _))
+        {
+            args.EntityManager.RemoveComponent<HarvestOnceComponent>(args.TargetEntity);
+            args.EntityManager.AddComponent<HarvestRepeatComponent>(args.TargetEntity);
+        }
+        else if (args.EntityManager.TryGetComponent<HarvestRepeatComponent>(args.TargetEntity, out var _))
+        {
+            args.EntityManager.RemoveComponent<HarvestRepeatComponent>(args.TargetEntity);
+            args.EntityManager.AddComponent<HarvestAutoComponent>(args.TargetEntity);
+        }
     }
 
     protected override string? ReagentEffectGuidebookText(IPrototypeManager prototype, IEntitySystemManager entSys)

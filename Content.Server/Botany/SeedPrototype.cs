@@ -174,8 +174,6 @@ public partial class SeedData
     [DataField] public float Production;
     [DataField] public int GrowthStages = 6;
 
-    [DataField] public HarvestType HarvestRepeat = HarvestType.NoRepeat;
-
     [DataField] public float Potency = 1f;
 
     /// <summary>
@@ -216,14 +214,6 @@ public partial class SeedData
     public ResPath PlantRsi { get; set; } = default!;
 
     [DataField] public string PlantIconState { get; set; } = "produce";
-
-    /// <summary>
-    /// Screams random sound from collection SoundCollectionSpecifier
-    /// </summary>
-    [DataField]
-    public SoundSpecifier ScreamSound = new SoundCollectionSpecifier("PlantScreams", AudioParams.Default.WithVolume(-10));
-
-    [DataField("screaming")] public bool CanScream;
 
     [DataField(customTypeSerializer: typeof(PrototypeIdSerializer<EntityPrototype>))] public string KudzuPrototype = "WeakKudzu";
 
@@ -279,7 +269,6 @@ public partial class SeedData
             Maturation = Maturation,
             Production = Production,
             GrowthStages = GrowthStages,
-            HarvestRepeat = HarvestRepeat,
             Potency = Potency,
 
             Seedless = Seedless,
@@ -288,7 +277,6 @@ public partial class SeedData
 
             PlantRsi = PlantRsi,
             PlantIconState = PlantIconState,
-            CanScream = CanScream,
             TurnIntoKudzu = TurnIntoKudzu,
             SplatPrototype = SplatPrototype,
             Mutations = new List<RandomPlantMutation>(),
@@ -340,7 +328,6 @@ public partial class SeedData
             Maturation = Maturation,
             Production = Production,
             GrowthStages = other.GrowthStages,
-            HarvestRepeat = HarvestRepeat,
             Potency = Potency,
 
             Mutations = Mutations,
@@ -351,7 +338,6 @@ public partial class SeedData
 
             PlantRsi = other.PlantRsi,
             PlantIconState = other.PlantIconState,
-            CanScream = CanScream,
             TurnIntoKudzu = TurnIntoKudzu,
             SplatPrototype = other.SplatPrototype,
 

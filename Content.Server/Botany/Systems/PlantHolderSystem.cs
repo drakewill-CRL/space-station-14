@@ -31,6 +31,7 @@ public sealed class PlantHolderSystem : EntitySystem
 {
     [Dependency] private readonly AtmosphereSystem _atmosphere = default!;
     [Dependency] private readonly BotanySystem _botany = default!;
+    [Dependency] private readonly HarvestSystem _harvest = default!;
     [Dependency] private readonly IPrototypeManager _prototype = default!;
     [Dependency] private readonly MutationSystem _mutation = default!;
     [Dependency] private readonly AppearanceSystem _appearance = default!;
@@ -303,8 +304,6 @@ public sealed class PlantHolderSystem : EntitySystem
             _popup.PopupCursor(Loc.GetString("plant-holder-component-take-sample-message",
                 ("seedName", displayName)), args.User);
 
-            DoScream(entity.Owner, component.Seed);
-
             if (_random.Prob(0.3f))
                 component.Sampled = true;
 
@@ -353,7 +352,9 @@ public sealed class PlantHolderSystem : EntitySystem
 
     private void OnInteractHand(Entity<PlantHolderComponent> entity, ref InteractHandEvent args)
     {
-        DoHarvest(entity, args.User, entity.Comp);
+        var harvestArgs = new OnHarvestEvent();
+        harvestArgs.user = args.User;
+        RaiseLocalEvent<OnHarvestEvent>(entity, harvestArgs);
     }
 
     public void WeedInvasion()
@@ -631,9 +632,6 @@ public sealed class PlantHolderSystem : EntitySystem
 
         CheckHealth(uid, component);
 
-        if (component.Harvest && component.Seed.HarvestRepeat == HarvestType.SelfHarvest)
-            AutoHarvest(uid, component);
-
         // If enough time has passed since the plant was harvested, we're ready to harvest again!
         if (!component.Dead && component.Seed.ProductPrototypes.Count > 0)
         {
@@ -693,20 +691,19 @@ public sealed class PlantHolderSystem : EntitySystem
         if (component.Seed == null || Deleted(user))
             return false;
 
-
         if (component.Harvest && !component.Dead)
         {
             if (TryComp<HandsComponent>(user, out var hands))
             {
-                if (!_botany.CanHarvest(component.Seed, hands.ActiveHandEntity))
+                if (!_harvest.CanHarvest(component.Seed, hands.ActiveHandEntity))
                     return false;
             }
-            else if (!_botany.CanHarvest(component.Seed))
+            else if (!_harvest.CanHarvest(component.Seed))
             {
                 return false;
             }
 
-            _botany.Harvest(component.Seed, user, component.YieldMod);
+            _harvest.Harvest(component.Seed, user, component.YieldMod);
             AfterHarvest(plantholder, component);
             return true;
         }
@@ -719,43 +716,13 @@ public sealed class PlantHolderSystem : EntitySystem
         return true;
     }
 
-    /// <summary>
-    /// Force do scream on PlantHolder (like plant is screaming) using seed's ScreamSound specifier (collection or soundPath)
-    /// </summary>
-    /// <returns></returns>
-    public bool DoScream(EntityUid plantholder, SeedData? seed = null)
-    {
-        if (seed == null || seed.CanScream == false)
-            return false;
-
-        _audio.PlayPvs(seed.ScreamSound, plantholder);
-        return true;
-    }
-
-    public void AutoHarvest(EntityUid uid, PlantHolderComponent? component = null)
-    {
-        if (!Resolve(uid, ref component))
-            return;
-
-        if (component.Seed == null || !component.Harvest)
-            return;
-
-        _botany.AutoHarvest(component.Seed, Transform(uid).Coordinates);
-        AfterHarvest(uid, component);
-    }
-
-    private void AfterHarvest(EntityUid uid, PlantHolderComponent? component = null)
+    public void AfterHarvest(EntityUid uid, PlantHolderComponent? component = null)
     {
         if (!Resolve(uid, ref component))
             return;
 
         component.Harvest = false;
         component.LastProduce = component.Age;
-
-        DoScream(uid, component.Seed);
-
-        if (component.Seed?.HarvestRepeat == HarvestType.NoRepeat)
-            RemovePlant(uid, component);
 
         CheckLevelSanity(uid, component);
         UpdateSprite(uid, component);
